@@ -12,7 +12,7 @@ Con este diseño busco tener facilidad a la hora de tratar los datos del catálo
 
 Cada videojuego dentro del catálogo sigue de forma estricta el siguiente esquema:
 
-```typescript
+```javascript
 {
   "id": number,                        // Identificador único numérico
   "titulo": string,                    // Nombre completo del videojuego
