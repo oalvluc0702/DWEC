@@ -6,6 +6,7 @@ Para la gestión del catálogo de videojuegos retro en la **Práctica 01**, se h
 
 Con este diseño busco tener facilidad a la hora de tratar los datos del catálogo y a buscar los objetos con los filtros pertinentes de roles.
 
+Prefiero que la plataforma y la categoría sean un array porque un videojuego puede estar en varias plataformas y varias categorías
 ---
 
 ### 🔍 Estructura del Objeto `Producto`
