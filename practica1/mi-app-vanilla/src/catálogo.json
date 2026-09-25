@@ -1,0 +1,110 @@
+[
+  {
+    "id": 1,
+    "titulo": "The Legend of Zelda: A Link to the Past",
+    "plataforma": ["SNES"],
+    "categoria": ["RPG", "Aventura"],
+    "precio base": 45.00,
+    "estado de conservación": "nuevo-precintado",
+    "stock": 2
+  },
+  {
+    "id": 2,
+    "titulo": "Sonic the Hedgehog 2",
+    "plataforma": ["MEGA DRIVE"],
+    "categoria": ["Plataformas"],
+    "precio base": 15.50,
+    "estado de conservación": "usado-como-nuevo",
+    "stock": 8
+  },
+  {
+    "id": 3,
+    "titulo": "Castlevania: Symphony of the Night",
+    "plataforma": ["PS1"],
+    "categoria": ["RPG", "Plataformas", "Acción"],
+    "precio base": 120.00,
+    "estado de conservación": "usado-caja-danada",
+    "stock": 1
+  },
+  {
+    "id": 4,
+    "titulo": "Super Mario 64",
+    "plataforma": ["N64"],
+    "categoria": ["Plataformas"],
+    "precio base": 25.00,
+    "estado de conservación": "solo-cartucho",
+    "stock": 12
+  },
+  {
+    "id": 5,
+    "titulo": "Tetris",
+    "plataforma": ["GAME BOY"],
+    "categoria": ["Puzzle"],
+    "precio base": 10.00,
+    "estado de conservación": "solo-cartucho",
+    "stock": 15
+  },
+  {
+    "id": 6,
+    "titulo": "Street Fighter II Turbo",
+    "plataforma": ["SNES"],
+    "categoria": ["Lucha"],
+    "precio base": 30.00,
+    "estado de conservación": "usado-como-nuevo",
+    "stock": 4
+  },
+  {
+    "id": 7,
+    "titulo": "Pokemon Rojo",
+    "plataforma": ["GAME BOY"],
+    "categoria": ["RPG"],
+    "precio base": 55.00,
+    "estado de conservación": "usado-caja-danada",
+    "stock": 3
+  },
+  {
+    "id": 8,
+    "titulo": "International Superstar Soccer 98",
+    "plataforma": ["N64"],
+    "categoria": ["Deportes"],
+    "precio base": 12.00,
+    "estado de conservación": "solo-cartucho",
+    "stock": 6
+  },
+  {
+    "id": 9,
+    "titulo": "Metal Gear Solid",
+    "plataforma": ["PS1"],
+    "categoria": ["Acción", "Aventura"],
+    "precio base": 85.00,
+    "estado de conservación": "nuevo-precintado",
+    "stock": 1
+  },
+  {
+    "id": 10,
+    "titulo": "Streets of Rage 2",
+    "plataforma": ["MEGA DRIVE"],
+    "categoria": ["Lucha", "Acción"],
+    "precio base": 22.50,
+    "estado de conservación": "usado-como-nuevo",
+    "stock": 5
+  },
+  {
+    "id": 11,
+    "titulo": "Chrono Trigger",
+    "plataforma": ["SNES"],
+    "categoria": ["RPG"],
+    "precio base": 210.00,
+    "estado de conservación": "nuevo-precintado",
+    "stock": 1
+  },
+  {
+    "id": 12,
+    "titulo": "Dr. Mario",
+    "plataforma": ["GAME BOY", "SNES"],
+    "categoria": ["Puzzle"],
+    "precio base": 18.00,
+    "estado de conservación": "usado-caja-danada",
+    "stock": 7
+  }
+]
