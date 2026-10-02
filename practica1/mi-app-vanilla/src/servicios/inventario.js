@@ -2,20 +2,20 @@ import { umbral_stock_bajo } from "../config/tablas.js";
 
 // OPERACIONES DE BÚSQUEDA Y FILTRADO 
 
-// Buscar producto por ID o título parcial usando .find()
-export const buscarProducto = (catalogo, criterio) => {
-  if (!criterio) return null;
+// Búsqueda por ID exacto usando (devuelve 1 producto o null)
+export const buscarProductoPorId = (catalogo, id) => {
+  const idNum = Number(id);
+  if (isNaN(idNum)) return null;
+  return catalogo.find((prod) => prod.id === idNum) ?? null;
+};
 
-  const criterioLimpio = String(criterio).trim().toLowerCase();
-
-  return (
-    catalogo.find((producto) => {
-      const coincideId = String(producto.id) === criterioLimpio;
-      const coincideTitulo = producto.titulo
-        .toLowerCase()
-        .includes(criterioLimpio);
-      return coincideId || coincideTitulo;
-    }) ?? null
+// Búsqueda parcial por título usando (devuelve un array de productos)
+export const buscarProductosPorTitulo = (catalogo, titulo) => {
+  if (!titulo) return [];
+  const tituloLimpio = String(titulo).trim().toLowerCase();
+  
+  return catalogo.filter((prod) =>
+    prod.titulo.toLowerCase().includes(tituloLimpio)
   );
 };
 

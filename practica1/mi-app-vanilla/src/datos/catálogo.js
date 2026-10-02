@@ -106,5 +106,14 @@ export const catalogoInicial = [
     "precio base": 18.00,
     "estado de conservación": "usado-caja-danada",
     stock: 7
+  },
+  {
+    id: 13,
+    titulo: "Street Fighter III Turbo",
+    plataforma: ["SNES"],
+    categoria: ["Lucha"],
+    "precio base": 30.00,
+    "estado de conservación": "usado-como-nuevo",
+    stock: 4
   }
 ];
