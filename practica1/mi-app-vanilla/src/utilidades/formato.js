@@ -7,8 +7,7 @@ export const formatearProducto = (producto) => {
   const plataformas = producto.plataforma.join(", ");
   const categorias = producto.categoria.join(", ");
 
-  return `[ID: ${producto.id}] ${producto.titulo} (${plataformas}) | Cat: ${categorias} | Estado: ${producto["estado de conservación"]} | Precio Base: ${producto["precio base"].toFixed(2)}€ | Stock: ${producto.stock}${avisoStock}`;
-};
+return `[ID: ${producto.id}] ${producto.titulo} (${plataformas}) | Cat: ${categorias} | Estado: ${producto["estado de conservación"]} | Precio Base: ${producto["precio base"].toFixed(2)} € | Stock: ${producto.stock}${avisoStock}`;};
 
 // Formatea el catálogo para luego mostrarlo
 export const formatearCatalogo = (catalogo) => {
