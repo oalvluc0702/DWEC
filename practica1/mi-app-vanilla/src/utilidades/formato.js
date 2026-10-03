@@ -2,7 +2,7 @@ import { umbral_stock_bajo } from "../config/tablas.js";
 
 // Formatea un producto individual para mostrarlo en pantalla
 export const formatearProducto = (producto) => {
-  const avisoStock = producto.stock < umbral_stock_bajo ? " ⚠ Stock bajo" : "";
+  const avisoStock = producto.stock <= umbral_stock_bajo ? " ⚠ Stock bajo" : "";
 
   const plataformas = producto.plataforma.join(", ");
   const categorias = producto.categoria.join(", ");

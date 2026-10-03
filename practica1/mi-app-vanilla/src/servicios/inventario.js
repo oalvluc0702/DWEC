@@ -30,7 +30,7 @@ export const filtrarPorCategoria = (catalogo, categoria) => {
 
 // Filtrar productos umbral bajo
 export const obtenerProductosStockBajo = (catalogo) => {
-  return catalogo.filter((producto) => producto.stock < umbral_stock_bajo);
+  return catalogo.filter((producto) => producto.stock <= umbral_stock_bajo);
 };
 
 // VENTAS E INFORMES
@@ -104,7 +104,7 @@ export const generarInformeCaja = (catalogo) => {
   }
 
   // Aviso de productos en stock bajo
-  const hayStockBajo = catalogo.some((prod) => prod.stock < umbral_stock_bajo);
+  const hayStockBajo = catalogo.some((prod) => prod.stock <= umbral_stock_bajo);
 
   return {
     totalFacturado: totalFacturado.toFixed(2),
