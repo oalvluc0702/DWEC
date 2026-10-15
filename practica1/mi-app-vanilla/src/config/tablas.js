@@ -10,6 +10,7 @@ export const umbral_stock_bajo = 3;
 
 // Tabla B: descuentos, dependiendo de la cantidad de objetos comprados descuenta más o menos
 export const obtenerDescuentoVolumen = (cantidad) =>{
+    if (cantidad >= 5) return 0.12;
     if (cantidad >= 4) return 0.10;
     if (cantidad >= 2) return 0.05;
     return 0.00;

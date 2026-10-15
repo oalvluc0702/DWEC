@@ -1,3 +1,4 @@
+// añade a la tabla b un tramo nuevo de 5 unidades o mas 12%
 import { catalogoInicial } from "./datos/catálogo.js";
 import {
   calcularPrecioUnitarioFinal,
