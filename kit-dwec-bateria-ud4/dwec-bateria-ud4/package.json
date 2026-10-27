@@ -1,0 +1,7 @@
+{
+  "name": "dwec-bateria-ud4",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "DWEC · Batería de ejercicios de la UD4 (opcional). Todo se lanza con ./bateria.sh"
+}
