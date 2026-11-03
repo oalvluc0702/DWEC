@@ -12,6 +12,7 @@ export default [
       "prefer-const": "error",
       eqeqeq: ["error", "always"],
       "no-console": "warn",
+      "no-unused-vars": "warn",
     },
   },
 ];
