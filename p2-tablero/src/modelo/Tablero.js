@@ -63,7 +63,7 @@ export class Tablero {
     for(const columna of this.#columnas.values()){
       existe = columna.tiene(id);
       if (existe) {
-          const tarea = columna.find(t => t.id === id);
+          const tarea = columna.tareas.find(t => t.id === id);
           return tarea;
         }
       }
@@ -89,12 +89,19 @@ export class Tablero {
   mover(id, destino) {
     // 1. Obtenemos la columna destino (si no existe, lanzará el error automáticamente)
     const columnaDestino = this.columna(destino);
-
+    let encontrado = false;
+    let columnaAnterior;
     // 2. Validar si la tarea existe
-    if (!this.buscar(id)) return new Error("No existe la tarea");
+    for (const columna of this.#columnas.values()){
+      if(columna.tiene(id)){
+        columnaAnterior = columna;
+        encontrado = true;
+      }
+    }
+    if (!encontrado) throw new Error(`No existe la tarea${id}`);
 
     // 3. Validar si la columna destino está llena
-    if (columnaDestino.llena) return new Error("La columna esta llena");
+    if (columnaDestino.llena) throw new Error("La columna esta llena");
 
     // 4. Acción
     const tarea = this.buscar(id);
@@ -123,6 +130,35 @@ export class Tablero {
 
   // resumen(hoy = new Date()): { porHacer, enCurso, hecho, vencidas }
   //   vencidas = las que estaVencida(hoy) y NO están en «Hecho»
+  resumen(hoy = new Date()){
+    let porHacer = 0;
+    let enCurso = 0;
+    let hecho = 0;
+    let vencidas = 0;
+
+    for(const columna of this.#columnas.values()){
+      for(const tarea of columna.tareas){
+        if (columna.nombre === "Por hacer") {
+          porHacer++;
+        } else if (columna.nombre === "En curso") {
+          enCurso++;
+        } else if (columna.nombre === "Hecho") {
+          hecho++;
+        }
+        
+        if (tarea.estaVencida(hoy) && columna.nombre !== "Hecho"){
+          vencidas++;
+        }
+      }
+    }
+    
+    return {
+      porHacer,
+      enCurso,
+      hecho,
+      vencidas
+    };
+  }
 
   // ✍️ A5 · Reglas (vuelves a mover y completar) ─────────────────────────────────
   //   - Columna llena → ColumnaLlenaError (en vez de un Error cualquiera)
