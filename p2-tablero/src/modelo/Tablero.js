@@ -99,9 +99,10 @@ export class Tablero {
       }
     }
     if (!encontrado) throw new ErrorTablero(`No existe la tarea${id}`);
+    if (columnaAnterior.nombre === "Hecho" || columnaAnterior.nombre === columnaDestino.nombre) throw new MovimientoNoPermitidoError(id,columnaAnterior.nombre,columnaDestino.nombre)
 
     // 3. Validar si la columna destino está llena
-    if (columnaDestino.llena) throw new ColumnaLlenaError("La columna esta llena");
+    if (columnaDestino.llena) throw new ColumnaLlenaError(columnaDestino);
 
     // 4. Acción
     const tarea = this.buscar(id);
@@ -115,17 +116,22 @@ export class Tablero {
 
   // completar(id): la mueve a «Hecho» y añade a «Por hacer» lo que devuelva tarea.alCompletar()
   //   ⚠️ Sin preguntar si es recurrente: eso es el polimorfismo
-  completar(id){
-    const tareaCompletada = this.mover(id,"Hecho");
-    
-    if(tareaCompletada instanceof Error )return tareaCompletada;
+  completar(id) {
+    // 1. Movemos la tarea a "Hecho" (si hay error, mover() ya se encarga de lanzarlo)
+    const tareaCompletada = this.mover(id, "Hecho");
 
-    const nuevasTareas = tareaCompletada.alCompletar();
-    
-    const porHacer = this.columna("Por hacer")
-    for (const nuevaTarea of nuevasTareas ){
+    // 2. Si la tarea genera nuevas tareas al completarse (ej. tareas recurrentes)
+    const nuevasTareas = tareaCompletada.alCompletar ? tareaCompletada.alCompletar() : [];
+
+    // 3. Si hay nuevas tareas, las añadimos a la columna "Por hacer"
+    if (nuevasTareas && nuevasTareas.length > 0) {
+      const porHacer = this.columna("Por hacer");
+      for (const nuevaTarea of nuevasTareas) {
         porHacer.añadir(nuevaTarea);
+      }
     }
+    
+    return tareaCompletada;
   }
 
   // resumen(hoy = new Date()): { porHacer, enCurso, hecho, vencidas }
@@ -159,6 +165,7 @@ export class Tablero {
       vencidas
     };
   }
+
 
   // ✍️ A5 · Reglas (vuelves a mover y completar) ─────────────────────────────────
   //   - Columna llena → ColumnaLlenaError (en vez de un Error cualquiera)
