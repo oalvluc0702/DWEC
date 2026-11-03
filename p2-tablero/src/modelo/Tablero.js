@@ -17,72 +17,70 @@ export class Tablero {
   constructor(limiteEnCurso = 3) {
     // Crea las tres columnas; solo «En curso» lleva límite WIP (limiteEnCurso)
     this.#columnas = new Map(
-      Tablero.COLUMNAS.map(nombre => [
+      Tablero.COLUMNAS.map((nombre) => [
         nombre,
-        new Columna(nombre, nombre === "En curso" ? limiteEnCurso : null)
-      ])
-    )
+        new Columna(nombre, nombre === "En curso" ? limiteEnCurso : null),
+      ]),
+    );
   }
 
   // static desde(datos, limiteEnCurso): un Tablero con una tarea por cada objeto de datos
   //   (usa crearTarea)
-    static desde(datos, limiteEnCurso = 3) {
-    const tablero = new Tablero(limiteEnCurso)
-    for (const d of datos){
+  static desde(datos, limiteEnCurso = 3) {
+    const tablero = new Tablero(limiteEnCurso);
+    for (const d of datos) {
       const tarea = tablero.crearTarea(d);
 
-      tablero.columna("Por hacer").añadir(tarea)
+      tablero.columna("Por hacer").añadir(tarea);
     }
     return tablero;
   }
   // columna(nombre): la Columna, o un Error si no existe (que el mensaje lleve el nombre)
   columna(nombre) {
     if (!this.#columnas.has(nombre)) throw new ErrorTablero(`No existe la columna: ${nombre}`);
-    
+
     return this.#columnas.get(nombre);
   }
   // get columnas: array con las tres columnas, en orden
-   get columnas(){
-      return [...this.#columnas.values()]
-    }
+  get columnas() {
+    return [...this.#columnas.values()];
+  }
   // crearTarea(datos): TareaRecurrente si datos trae cadaDias, Tarea si no → a «Por hacer»
   //   y la devuelve. datos es un objeto { titulo, prioridad, limite, cadaDias }: saca cada campo
   //   y pásaselo al constructor, en su orden (new Tarea(datos) NO vale: espera el título)
-    crearTarea(datos){
-      const{titulo, prioridad, limite, cadaDias} = datos
-      if ('cadaDias' in datos){
-        return new TareaRecurrente(titulo,prioridad,limite,cadaDias);
-      } else{
-        return new Tarea(titulo,prioridad,limite);
-      }
+  crearTarea(datos) {
+    const { titulo, prioridad, limite, cadaDias } = datos;
+    if ("cadaDias" in datos) {
+      return new TareaRecurrente(titulo, prioridad, limite, cadaDias);
+    } else {
+      return new Tarea(titulo, prioridad, limite);
     }
+  }
 
   // buscar(id): la tarea, esté en la columna que esté, o null
-  buscar(id){
+  buscar(id) {
     let existe = false;
-    for(const columna of this.#columnas.values()){
+    for (const columna of this.#columnas.values()) {
       existe = columna.tiene(id);
       if (existe) {
-          const tarea = columna.tareas.find(t => t.id === id);
-          return tarea;
-        }
+        const tarea = columna.tareas.find((t) => t.id === id);
+        return tarea;
       }
-      return null;
     }
-    
-  
+    return null;
+  }
+
   // dondeEsta(id): la Columna donde está, o null
-    dondeEsta(id){
-      let existe = false;
-      for(const columna of this.#columnas.values()){
+  dondeEsta(id) {
+    let existe = false;
+    for (const columna of this.#columnas.values()) {
       existe = columna.tiene(id);
 
       if (existe) return columna;
-
-      }
-      return null;
     }
-  
+    return null;
+  }
+
   // mover(id, destino): Error si no existe la tarea · Error si la columna destino está llena
   //   (¡comprueba ANTES de quitarla de su columna, o se perdería!) · la mueve y la devuelve
 
@@ -92,14 +90,15 @@ export class Tablero {
     let encontrado = false;
     let columnaAnterior;
     // 2. Validar si la tarea existe
-    for (const columna of this.#columnas.values()){
-      if(columna.tiene(id)){
+    for (const columna of this.#columnas.values()) {
+      if (columna.tiene(id)) {
         columnaAnterior = columna;
         encontrado = true;
       }
     }
     if (!encontrado) throw new ErrorTablero(`No existe la tarea${id}`);
-    if (columnaAnterior.nombre === "Hecho" || columnaAnterior.nombre === columnaDestino.nombre) throw new MovimientoNoPermitidoError(id,columnaAnterior.nombre,columnaDestino.nombre)
+    if (columnaAnterior.nombre === "Hecho" || columnaAnterior.nombre === columnaDestino.nombre)
+      throw new MovimientoNoPermitidoError(id, columnaAnterior.nombre, columnaDestino.nombre);
 
     // 3. Validar si la columna destino está llena
     if (columnaDestino.llena) throw new ColumnaLlenaError(columnaDestino);
@@ -107,10 +106,10 @@ export class Tablero {
     // 4. Acción
     const tarea = this.buscar(id);
     const columnaOrigen = this.dondeEsta(id);
-    
+
     columnaOrigen.quitar(id);
     columnaDestino.añadir(tarea);
-    
+
     return tarea;
   }
 
@@ -130,20 +129,20 @@ export class Tablero {
         porHacer.añadir(nuevaTarea);
       }
     }
-    
+
     return tareaCompletada;
   }
 
   // resumen(hoy = new Date()): { porHacer, enCurso, hecho, vencidas }
   //   vencidas = las que estaVencida(hoy) y NO están en «Hecho»
-  resumen(hoy = new Date()){
+  resumen(hoy = new Date()) {
     let porHacer = 0;
     let enCurso = 0;
     let hecho = 0;
     let vencidas = 0;
 
-    for(const columna of this.#columnas.values()){
-      for(const tarea of columna.tareas){
+    for (const columna of this.#columnas.values()) {
+      for (const tarea of columna.tareas) {
         if (columna.nombre === "Por hacer") {
           porHacer++;
         } else if (columna.nombre === "En curso") {
@@ -151,21 +150,20 @@ export class Tablero {
         } else if (columna.nombre === "Hecho") {
           hecho++;
         }
-        
-        if (tarea.estaVencida(hoy) && columna.nombre !== "Hecho"){
+
+        if (tarea.estaVencida(hoy) && columna.nombre !== "Hecho") {
           vencidas++;
         }
       }
     }
-    
+
     return {
       porHacer,
       enCurso,
       hecho,
-      vencidas
+      vencidas,
     };
   }
-
 
   // ✍️ A5 · Reglas (vuelves a mover y completar) ─────────────────────────────────
   //   - Columna llena → ColumnaLlenaError (en vez de un Error cualquiera)
@@ -182,7 +180,6 @@ export class Tablero {
   static desdeJSON(datos) {
     throw new Error("Sin hacer");
   }
-  
 }
 
 // Comprueba con:  docker compose run --rm web npm test bloque-a

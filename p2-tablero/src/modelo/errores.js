@@ -5,36 +5,36 @@
 // ErrorTablero extends Error
 //   - constructor(mensaje): llama al padre con el mensaje
 //   - name = el nombre de la clase. Pista: this.constructor.name también vale en las subclases.
-export class ErrorTablero extends Error{
-    constructor(mensaje){
-        super(mensaje);
-        this.name = this.constructor.name;
-    }
+export class ErrorTablero extends Error {
+  constructor(mensaje) {
+    super(mensaje);
+    this.name = this.constructor.name;
+  }
 }
 
 // ColumnaLlenaError extends ErrorTablero
 //   - constructor(columna): recibe la Columna (o cualquier objeto con nombre y limiteWip)
 //   - mensaje: «En curso» está llena (máximo 2)   ← que diga «llena», el nombre y el límite
 //   - guarda this.columna (el NOMBRE, un string) y this.limite
-export class ColumnaLlenaError extends ErrorTablero{
-    constructor(columna){
-        const mensaje = `${columna.nombre} está llena (máximo ${columna.limiteWip})`
-        super(mensaje)
-        this.columna = columna.nombre
-        this.limite = columna.limiteWip
-    }
+export class ColumnaLlenaError extends ErrorTablero {
+  constructor(columna) {
+    const mensaje = `${columna.nombre} está llena (máximo ${columna.limiteWip})`;
+    super(mensaje);
+    this.columna = columna.nombre;
+    this.limite = columna.limiteWip;
+  }
 }
 
 // MovimientoNoPermitidoError extends ErrorTablero
 //   - constructor(id, desde, hasta): los dos últimos son nombres de columna
 //   - mensaje con el id de la tarea; guarda this.desde y this.hasta
-export class MovimientoNoPermitidoError extends ErrorTablero{
-    constructor(id,desde,hasta){
-        const mensaje = `No se ha podido mover la tarea ${id} desde ${desde} hasta ${hasta}` 
-        
-        super(mensaje);
-        this.id = id;
-        this.desde = desde;
-        this.hasta = hasta;
-    }
+export class MovimientoNoPermitidoError extends ErrorTablero {
+  constructor(id, desde, hasta) {
+    const mensaje = `No se ha podido mover la tarea ${id} desde ${desde} hasta ${hasta}`;
+
+    super(mensaje);
+    this.id = id;
+    this.desde = desde;
+    this.hasta = hasta;
+  }
 }

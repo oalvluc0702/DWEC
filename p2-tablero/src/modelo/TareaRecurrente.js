@@ -10,33 +10,33 @@ export class TareaRecurrente extends Tarea {
   // (Bloque C · ✍️ C3: añadirás un quinto parámetro, id = null, y se lo pasarás también al super)
   constructor(titulo, prioridad, limite, cadaDias) {
     // 2 · Llama al constructor del padre (super) con lo que es de Tarea, ANTES de usar this.
-    super( titulo, prioridad, limite);
+    super(titulo, prioridad, limite);
     // 3 · cadaDias tiene que ser un entero ≥ 1 → si no, RangeError.
     //     Pista: Number.isInteger
-        if (!Number.isInteger(cadaDias) || cadaDias < 1) throw new RangeError() ;
+    if (!Number.isInteger(cadaDias) || cadaDias < 1) throw new RangeError();
 
     // 4 · Una recurrente sin límite no tiene sentido → si this.limite es null, TypeError.
-        if (this.limite === null) throw new TypeError();
+    if (this.limite === null) throw new TypeError();
     // 5 · Guarda this.cadaDias.
-        this.cadaDias = cadaDias;
-    }
+    this.cadaDias = cadaDias;
+  }
 
   // 6 · siguiente(): devuelve una TareaRecurrente NUEVA con el mismo título, prioridad y cadaDias,
   //     y el límite cadaDias días después. ⚠️ Sin tocar this.limite: copia la fecha primero.
   //     Pista: const limite = new Date(this.limite); limite.setDate(limite.getDate() + …)
-siguiente(){
+  siguiente() {
     const limite = new Date(this.limite);
-    limite.setDate(limite.getDate() + this.cadaDias)
-    return new TareaRecurrente(this.titulo, this.prioridad,limite, this.cadaDias);
+    limite.setDate(limite.getDate() + this.cadaDias);
+    return new TareaRecurrente(this.titulo, this.prioridad, limite, this.cadaDias);
   }
   // 7 · Sobrescribe alCompletar(): en vez de [], devuelve [la siguiente].
-alCompletar(){
-      return [this.siguiente()];
-    }
+  alCompletar() {
+    return [this.siguiente()];
+  }
   // 8 · Sobrescribe toString(): lo del padre + " · 🔁 cada N días".
   toString() {
-        return `${super.toString()} · 🔁 cada ${this.cadaDias} días`;
-    }
+    return `${super.toString()} · 🔁 cada ${this.cadaDias} días`;
+  }
 }
 
 // Comprueba con:  docker compose run --rm web npm test 2-recurrente
