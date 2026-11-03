@@ -2,7 +2,7 @@
 // En el bloque C volverás aquí para ✍️ C4 (toJSON y desdeJSON).
 // El tablero TIENE tres columnas: es composición, no hereda de nadie.
 import { Columna } from "./Columna.js";
-import { ColumnaLlenaError, MovimientoNoPermitidoError } from "./errores.js";
+import { ColumnaLlenaError, ErrorTablero, MovimientoNoPermitidoError } from "./errores.js";
 import { Tarea } from "./Tarea.js";
 import { TareaRecurrente } from "./TareaRecurrente.js";
 import { aDatos, desdeDatos } from "./serializar.js";
@@ -37,7 +37,7 @@ export class Tablero {
   }
   // columna(nombre): la Columna, o un Error si no existe (que el mensaje lleve el nombre)
   columna(nombre) {
-    if (!this.#columnas.has(nombre)) throw new Error(`No existe la columna: ${nombre}`);
+    if (!this.#columnas.has(nombre)) throw new ErrorTablero(`No existe la columna: ${nombre}`);
     
     return this.#columnas.get(nombre);
   }
@@ -98,10 +98,10 @@ export class Tablero {
         encontrado = true;
       }
     }
-    if (!encontrado) throw new Error(`No existe la tarea${id}`);
+    if (!encontrado) throw new ErrorTablero(`No existe la tarea${id}`);
 
     // 3. Validar si la columna destino está llena
-    if (columnaDestino.llena) throw new Error("La columna esta llena");
+    if (columnaDestino.llena) throw new ColumnaLlenaError("La columna esta llena");
 
     // 4. Acción
     const tarea = this.buscar(id);
