@@ -26,7 +26,7 @@ export function leerFormulario(form) {
 export function mostrarErrores(form, errores) {
   const parrafos = form.querySelectorAll(`p[data-error-de]`);
   for (const linea of parrafos) {
-    let campo = linea.dataset.errorDe;
+    const campo = linea.dataset.errorDe;
     if (errores[campo]) {
       linea.textContent = errores[campo];
       form.elements[campo].setAttribute("aria-invalid", true);

@@ -44,39 +44,40 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
   //   La fecha de hoy: const ahora = hoy ?? new Date();  (los tests pasan una fija)
   function pintar() {
     const ahora = hoy ?? new Date();
-    const listaColumnas = columnas.querySelectorAll('[data-columna]');
+    const listaColumnas = columnas.querySelectorAll("[data-columna]");
 
-    const resumenTablero = tablero.resumen(ahora)
+    const resumenTablero = tablero.resumen(ahora);
 
-    const progreso = raiz.querySelector('[data-dato="progreso"]')
-    if (progreso){
+    const progreso = raiz.querySelector('[data-dato="progreso"]');
+    if (progreso) {
       const total = resumenTablero.porHacer + resumenTablero.enCurso + resumenTablero.hecho;
       const hechas = resumenTablero.hecho;
       const porcentaje = total === 0 ? 0 : Math.round((hechas / total) * 100);
-      progreso.textContent = `${porcentaje} %`
+      progreso.textContent = `${porcentaje} %`;
     }
-    
+
     const elVencidas = raiz.querySelector('[data-dato="vencidas"]');
     if (elVencidas) {
       elVencidas.textContent = resumenTablero.vencidas ?? 0;
     }
 
-    for (const columna of listaColumnas){
+    for (const columna of listaColumnas) {
       const nombreCol = columna.dataset.columna;
       const colLista = columna.querySelector(".lista");
       const columnaObjeto = tablero.columna(nombreCol);
       const tareasOrdenadas = columnaObjeto.ordenadas();
-      pintarLista(colLista,tareasOrdenadas, ahora)
-      const listaTarjetas = colLista.querySelectorAll(".tarjeta")
-      const accionesPermitidas = ACCIONES[nombreCol] || []
-      const contadorColumna = columna.querySelector('.contador')
+      pintarLista(colLista, tareasOrdenadas, ahora);
+      const listaTarjetas = colLista.querySelectorAll(".tarjeta");
+      const accionesPermitidas = ACCIONES[nombreCol] || [];
+      const contadorColumna = columna.querySelector(".contador");
       const totalTareas = tareasOrdenadas.length;
-      contadorColumna.textContent = columnaObjeto.limiteWip !== null 
-  ? `(${totalTareas}/${columnaObjeto.limiteWip})` 
-  : `(${totalTareas})`;
-    
-      for (const tarjeta of listaTarjetas){
-        for (const [texto, accion] of accionesPermitidas){
+      contadorColumna.textContent =
+        columnaObjeto.limiteWip !== null
+          ? `(${totalTareas}/${columnaObjeto.limiteWip})`
+          : `(${totalTareas})`;
+
+      for (const tarjeta of listaTarjetas) {
+        for (const [texto, accion] of accionesPermitidas) {
           const boton = document.createElement("button");
           boton.type = "button";
           boton.dataset.accion = accion;
@@ -84,9 +85,7 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
           tarjeta.append(boton);
         }
       }
-      
     }
-    
   }
 
   // 👀 Resuelto: avisar("texto") enseña el aviso; avisar("") lo esconde
@@ -101,7 +100,33 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
   //   Si el tablero lanza un ErrorTablero → avisar(error.message) y no se repinta.
   //   Cualquier otro error → se relanza (es un fallo del programa).
   //   Pista: una función cambiar(accion) con el try/catch te sirve también para el B6.
+  delegar(columnas, "click", "button", (e) => {
+    const accion = e.dataset.accion;
+    const idTarjeta = e.closest(".tarjeta");
+    const idTarjetaBueno = Number(idTarjeta.dataset.id);
+    cambiar(accion, idTarjetaBueno);
+  });
+  function cambiar(accion, id) {
+    try {
+      if (accion === "empezar") {
+        tablero.mover(id, "En curso");
+      } else if (accion === "volver") {
+        tablero.mover(id, "Por hacer");
+      } else if (accion === "completar") {
+        tablero.completar(id);
+      }
 
+      avisar("");
+      pintar();
+      alCambiar(tablero);
+    } catch (error) {
+      if (error instanceof ErrorTablero) {
+        avisar(error.message);
+      } else {
+        throw error; // Si es un bug de código, se relanza
+      }
+    }
+  }
   // ✍️ B6 · submit de `form`: preventDefault, leerFormulario, validar y mostrarErrores. Si hay errores,
   //   no se crea nada. Si no, tablero.crearTarea(datos) (como un cambio más) y form.reset().
 
