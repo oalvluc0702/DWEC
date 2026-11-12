@@ -43,7 +43,50 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
   //   - [data-dato="vencidas"]: las vencidas de tablero.resumen(ahora)
   //   La fecha de hoy: const ahora = hoy ?? new Date();  (los tests pasan una fija)
   function pintar() {
-    throw new Error("Sin hacer");
+    const ahora = hoy ?? new Date();
+    const listaColumnas = columnas.querySelectorAll('[data-columna]');
+
+    const resumenTablero = tablero.resumen(ahora)
+
+    const progreso = raiz.querySelector('[data-dato="progreso"]')
+    if (progreso){
+      const total = resumenTablero.porHacer + resumenTablero.enCurso + resumenTablero.hecho;
+      const hechas = resumenTablero.hecho;
+      const porcentaje = total === 0 ? 0 : Math.round((hechas / total) * 100);
+      progreso.textContent = `${porcentaje} %`
+    }
+    
+    const elVencidas = raiz.querySelector('[data-dato="vencidas"]');
+    if (elVencidas) {
+      elVencidas.textContent = resumenTablero.vencidas ?? 0;
+    }
+
+    for (const columna of listaColumnas){
+      const nombreCol = columna.dataset.columna;
+      const colLista = columna.querySelector(".lista");
+      const columnaObjeto = tablero.columna(nombreCol);
+      const tareasOrdenadas = columnaObjeto.ordenadas();
+      pintarLista(colLista,tareasOrdenadas, ahora)
+      const listaTarjetas = colLista.querySelectorAll(".tarjeta")
+      const accionesPermitidas = ACCIONES[nombreCol] || []
+      const contadorColumna = columna.querySelector('.contador')
+      const totalTareas = tareasOrdenadas.length;
+      contadorColumna.textContent = columnaObjeto.limiteWip !== null 
+  ? `(${totalTareas}/${columnaObjeto.limiteWip})` 
+  : `(${totalTareas})`;
+    
+      for (const tarjeta of listaTarjetas){
+        for (const [texto, accion] of accionesPermitidas){
+          const boton = document.createElement("button");
+          boton.type = "button";
+          boton.dataset.accion = accion;
+          boton.textContent = texto;
+          tarjeta.append(boton);
+        }
+      }
+      
+    }
+    
   }
 
   // 👀 Resuelto: avisar("texto") enseña el aviso; avisar("") lo esconde
