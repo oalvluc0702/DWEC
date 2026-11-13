@@ -21,8 +21,21 @@ const ACCIONES = {
 //   - cadaDias (si viene): entero mayor que 0. Si es correcto pero no hay limite, el error va
 //     en «limite»: una tarea que se repite necesita fecha límite
 export function validar(datos) {
-  throw new Error("Sin hacer");
-}
+  const errores = {}
+  if (!datos.titulo || datos.titulo.length > 80){
+    errores["titulo"] = "obligatorio y como mucho 80 caracteres";
+  }
+  if(datos.cadaDias !== undefined && datos.cadaDias !== null && datos.cadaDias !== ""){
+    if (!Number.isInteger(datos.cadaDias) || datos.cadaDias <= 0) {
+      errores["cadaDias"] = "entero mayor que 0";
+    } else if (!datos.limite) {
+      errores["limite"] = "una tarea que se repite necesita fecha límite";
+    }
+  }
+    return errores;
+  }
+  
+
 
 /**
  * Arranca la interfaz dentro de raiz (el <main id="app">). Los listeners se ponen UNA vez aquí;
@@ -100,12 +113,15 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
   //   Si el tablero lanza un ErrorTablero → avisar(error.message) y no se repinta.
   //   Cualquier otro error → se relanza (es un fallo del programa).
   //   Pista: una función cambiar(accion) con el try/catch te sirve también para el B6.
-  delegar(columnas, "click", "button", (e) => {
-    const accion = e.dataset.accion;
-    const idTarjeta = e.closest(".tarjeta");
-    const idTarjetaBueno = Number(idTarjeta.dataset.id);
-    cambiar(accion, idTarjetaBueno);
+  delegar(columnas, "click", "button", (boton, e) => {
+    const accion = boton.dataset.accion;
+    const tarjeta = boton.closest(".tarjeta");
+    if (!tarjeta) return;
+    
+    const id = Number(tarjeta.dataset.id);
+    cambiar(accion, id);
   });
+
   function cambiar(accion, id) {
     try {
       if (accion === "empezar") {
@@ -129,7 +145,34 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
   }
   // ✍️ B6 · submit de `form`: preventDefault, leerFormulario, validar y mostrarErrores. Si hay errores,
   //   no se crea nada. Si no, tablero.crearTarea(datos) (como un cambio más) y form.reset().
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const datosFormulario = leerFormulario(form);
 
+    if (datosFormulario.cadaDias) {
+      datosFormulario.cadaDias = Number(datosFormulario.cadaDias);
+    }
+    
+    const errores = validar(datosFormulario);
+    if (Object.keys(errores).length > 0) {
+      mostrarErrores(form, errores);
+    } else {
+      try {
+        mostrarErrores(form, errores);
+        tablero.columna("Por hacer").añadir(tablero.crearTarea(datosFormulario));
+        avisar("");
+        pintar();
+        alCambiar(tablero);
+        form.reset();
+      } catch (error) {
+        if (error instanceof ErrorTablero) {
+          avisar(error.message);
+        } else {
+          throw error;
+        }
+      }
+    }
+  });
   pintar();
   return { pintar };
 }
