@@ -21,21 +21,19 @@ const ACCIONES = {
 //   - cadaDias (si viene): entero mayor que 0. Si es correcto pero no hay limite, el error va
 //     en «limite»: una tarea que se repite necesita fecha límite
 export function validar(datos) {
-  const errores = {}
-  if (!datos.titulo || datos.titulo.length > 80){
+  const errores = {};
+  if (!datos.titulo || datos.titulo.length > 80) {
     errores["titulo"] = "obligatorio y como mucho 80 caracteres";
   }
-  if(datos.cadaDias !== undefined && datos.cadaDias !== null && datos.cadaDias !== ""){
+  if (datos.cadaDias !== undefined && datos.cadaDias !== null && datos.cadaDias !== "") {
     if (!Number.isInteger(datos.cadaDias) || datos.cadaDias <= 0) {
       errores["cadaDias"] = "entero mayor que 0";
     } else if (!datos.limite) {
       errores["limite"] = "una tarea que se repite necesita fecha límite";
     }
   }
-    return errores;
-  }
-  
-
+  return errores;
+}
 
 /**
  * Arranca la interfaz dentro de raiz (el <main id="app">). Los listeners se ponen UNA vez aquí;
@@ -117,7 +115,7 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
     const accion = boton.dataset.accion;
     const tarjeta = boton.closest(".tarjeta");
     if (!tarjeta) return;
-    
+
     const id = Number(tarjeta.dataset.id);
     cambiar(accion, id);
   });
@@ -152,7 +150,7 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
     if (datosFormulario.cadaDias) {
       datosFormulario.cadaDias = Number(datosFormulario.cadaDias);
     }
-    
+
     const errores = validar(datosFormulario);
     if (Object.keys(errores).length > 0) {
       mostrarErrores(form, errores);
