@@ -6,7 +6,6 @@
 //   · Date              → la fecha límite, leída en hora local (mira parsearFecha en fechas.js)
 //   · alCompletar()     → devuelve [] aquí; las subclases pueden cambiarlo (polimorfismo)
 import { formatear, parsearFecha, soloDia } from "./fechas.js";
-
 export class Tarea {
   static PRIORIDADES = Object.freeze(["baja", "media", "alta"]);
   static #siguienteId = 1;
@@ -17,8 +16,18 @@ export class Tarea {
   // new Tarea("Preparar la demo", "alta", "2026-11-05") · new Tarea("Escribir el README")
   // Los parámetros con = tienen valor por defecto: si no los pasas, prioridad "media" y sin límite.
   // (Bloque C · ✍️ C3: aquí añadirás un cuarto parámetro, el id, para recuperar las tareas guardadas)
-  constructor(titulo, prioridad = "media", limite = null) {
-    this.id = Tarea.#siguienteId++;
+  constructor(titulo, prioridad = "media", limite = null, id = null) {
+    
+     if(id != null && (id === 0 || !Number.isInteger(id))){
+      throw new RangeError("EL número no está en un rango válido o es una cadena");
+    } 
+    if (id === null){
+      this.id = Tarea.#siguienteId++;
+    }else{
+      this.id = id;
+      Tarea.#siguienteId = id + 1;
+    }
+    
     this.titulo = titulo; // pasa por el setter: se valida también al crear
     this.prioridad = prioridad;
     this.limite = limite === null ? null : parsearFecha(limite);

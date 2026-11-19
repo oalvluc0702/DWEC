@@ -8,9 +8,9 @@ export class TareaRecurrente extends Tarea {
   cadaDias = 0;
   // new TareaRecurrente("Sacar la basura", "media", "2026-10-23", 7): lo mismo que una Tarea + cadaDias
   // (Bloque C · ✍️ C3: añadirás un quinto parámetro, id = null, y se lo pasarás también al super)
-  constructor(titulo, prioridad, limite, cadaDias) {
+  constructor(titulo, prioridad, limite, cadaDias, id = null) {
     // 2 · Llama al constructor del padre (super) con lo que es de Tarea, ANTES de usar this.
-    super(titulo, prioridad, limite);
+    super(titulo, prioridad, limite, id);
     // 3 · cadaDias tiene que ser un entero ≥ 1 → si no, RangeError.
     //     Pista: Number.isInteger
     if (!Number.isInteger(cadaDias) || cadaDias < 1) throw new RangeError();
