@@ -175,39 +175,38 @@ export class Tablero {
   // ✍️ C4 (bloque C) ────────────────────────────────────────────────────────────
   // toJSON(): { version, limiteEnCurso, columnas: { "Por hacer": [datos…], … } }
   //   JSON.stringify(tablero) lo llama solo. Sin él sale "{}": los # no se ven. Usa aDatos.
-   toJSON() {
-    const anadirTareaColumna = (nombre) =>{
-      let listaTareas = [];
-      for (const tarea of this.columna(nombre).tareas){
-          listaTareas.push(aDatos(tarea))
+  toJSON() {
+    const anadirTareaColumna = (nombre) => {
+      const listaTareas = [];
+      for (const tarea of this.columna(nombre).tareas) {
+        listaTareas.push(aDatos(tarea));
       }
       return listaTareas;
-    }
-  
+    };
+
     const limiteEnCurso = this.columna("En curso").limiteWip;
-    return{
+    return {
       version: Tablero.VERSION_DATOS,
       limiteEnCurso: limiteEnCurso,
-      columnas:{
-        "Por hacer" : anadirTareaColumna("Por hacer"),
-        "En curso" : anadirTareaColumna("En curso"),
-        "Hecho" : anadirTareaColumna("Hecho")
-      }
-    }
+      columnas: {
+        "Por hacer": anadirTareaColumna("Por hacer"),
+        "En curso": anadirTareaColumna("En curso"),
+        Hecho: anadirTareaColumna("Hecho"),
+      },
+    };
   }
   /** Lo contrario de toJSON: el MISMO tablero (columnas, ids y límite WIP). Lanza si no encaja. */
   static desdeJSON(datos) {
-    if (datos === null || Tablero.VERSION_DATOS !== datos.version){
-      throw new ErrorTablero("Datos no existe o la versión no es la misma")
+    if (datos === null || Tablero.VERSION_DATOS !== datos.version) {
+      throw new ErrorTablero("Datos no existe o la versión no es la misma");
     }
     const tablero = new Tablero(datos.limiteEnCurso);
-    for (const nombreCol of Tablero.COLUMNAS ){
+    for (const nombreCol of Tablero.COLUMNAS) {
       const columna = tablero.columna(nombreCol);
-      for ( const datosTareas of datos.columnas[nombreCol]){
-        const tarea = desdeDatos(datosTareas)
-        columna.añadir(tarea)
+      for (const datosTareas of datos.columnas[nombreCol]) {
+        const tarea = desdeDatos(datosTareas);
+        columna.añadir(tarea);
       }
-
     }
     return tablero;
   }
