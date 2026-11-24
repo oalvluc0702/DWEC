@@ -8,7 +8,7 @@ export const CLAVE = "dwec-p2-tablero";
 
 // ✍️ C5 · guardarTablero(tablero, storage = localStorage): guarda el tablero en CLAVE
 export function guardarTablero(tablero, storage = localStorage) {
-  throw new Error("Sin hacer");
+  guardar(CLAVE,tablero,storage);
 }
 
 // ✍️ C6 · async arrancar({ storage = localStorage, fetchFn = fetch, url = "/tareas-iniciales.json",
