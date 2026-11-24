@@ -28,7 +28,7 @@ export function aDatos(tarea) {
 //   (cada campo a su sitio en el constructor, también el id)
 export function desdeDatos(datos) {
   if (datos.cadaDias){
-    return new TareaRecurrente(datos.titulo,datos.prioridad,datos.limite,datos.cadaDias)
+    return new TareaRecurrente(datos.titulo,datos.prioridad,datos.limite,datos.cadaDias,datos.id)
   }
-  return new Tarea(datos.titulo,datos.prioridad,datos.limite)
+  return new Tarea(datos.titulo,datos.prioridad,datos.limite, datos.id)
 }

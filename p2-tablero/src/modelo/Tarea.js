@@ -25,7 +25,10 @@ export class Tarea {
       this.id = Tarea.#siguienteId++;
     }else{
       this.id = id;
-      Tarea.#siguienteId = id + 1;
+      if (id + 1 > Tarea.#siguienteId ){
+        Tarea.#siguienteId = id + 1;
+      }
+      
     }
     
     this.titulo = titulo; // pasa por el setter: se valida también al crear
