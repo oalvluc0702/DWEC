@@ -89,16 +89,24 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
 
       for (const tarjeta of listaTarjetas) {
         for (const [texto, accion] of accionesPermitidas) {
-          const boton = document.createElement("button");
-          boton.type = "button";
-          boton.dataset.accion = accion;
-          boton.textContent = texto;
+          const boton = crearBoton(texto,accion)
           tarjeta.append(boton);
+          
         }
+        if (columnaObjeto.nombre === "Por hacer" && tablero.buscar(Number(tarjeta.dataset.id)).limite){
+            tarjeta.append(crearBoton("Posponer y empezar", "posponer"))
+          }
       }
+      
     }
   }
-
+  function crearBoton(texto,accion){
+    const boton = document.createElement("button");
+    boton.type = "button";
+    boton.dataset.accion = accion;
+    boton.textContent = texto;
+    return boton
+  }
   // 👀 Resuelto: avisar("texto") enseña el aviso; avisar("") lo esconde
   function avisar(mensaje) {
     aviso.textContent = mensaje;
@@ -115,10 +123,18 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
     const accion = boton.dataset.accion;
     const tarjeta = boton.closest(".tarjeta");
     if (!tarjeta) return;
-
     const id = Number(tarjeta.dataset.id);
     cambiar(accion, id);
   });
+
+  delegar(columnas, "submit", "form", (formulario, evento) => {
+  evento.preventDefault();
+  const tarea = tablero.buscar(Number(formulario.closest(".tarjeta").dataset.id));
+  const valor = formulario.elements.dias.value.trim();
+  const mensaje = revisar(valor, tarea, tablero, hoy ?? new Date());
+  mostrarErrores(formulario, { dias: mensaje });
+  if (mensaje === "") cambiar(() => aplicar(tablero, tarea, valor));
+});
 
   function cambiar(accion, id) {
     try {
@@ -128,7 +144,11 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
         tablero.mover(id, "Por hacer");
       } else if (accion === "completar") {
         tablero.completar(id);
-      }
+      } else if (accion === "posponer"){
+        columnas.querySelector("form")?.remove()
+        crearFormulario(tablero.buscar(id))
+        return;
+      } else if (accion === "cancelar") return columnas.querySelector("form")?.remove()
 
       avisar("");
       pintar();
@@ -173,6 +193,19 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
   });
   pintar();
   return { pintar };
+}
+const crear = (etiqueta, datos) => Object.assign(document.createElement(etiqueta), datos);
+
+function crearFormulario(tarea) {
+  const form = crear("form", { noValidate: true });
+  form.dataset.form = "posponer";
+  const etiqueta = crear("label", { textContent: `Días que se pospone «${tarea.titulo}»` });
+  etiqueta.append(crear("input", { name: "dias", type: "number", value: 1 }));
+  const error = crear("p", { className: "error" });
+  error.dataset.errorDe = "dias";
+  const enviar = crear("button", { type: "submit", textContent: "Guardar" });
+  form.append(etiqueta, error, enviar, crearBoton("Cancelar", "cancelar"));
+  return form;
 }
 
 (void ACCIONES, ErrorTablero, delegar, leerFormulario, mostrarErrores, pintarLista); // (borra esta línea cuando los uses)
