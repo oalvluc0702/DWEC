@@ -133,7 +133,7 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
   const valor = formulario.elements.dias.value.trim();
   const mensaje = revisar(valor, tarea, tablero, hoy ?? new Date());
   mostrarErrores(formulario, { dias: mensaje });
-  if (mensaje === "") cambiar(() => aplicar(tablero, tarea, valor));
+  if (mensaje === "") cambiar();
 });
 
   function cambiar(accion, id) {
@@ -145,8 +145,8 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
       } else if (accion === "completar") {
         tablero.completar(id);
       } else if (accion === "posponer"){
-        columnas.querySelector("form")?.remove()
-        crearFormulario(tablero.buscar(id))
+        columnas.querySelector("form")?.remove();
+        crearFormulario(tablero.buscar(id));
         return;
       } else if (accion === "cancelar") return columnas.querySelector("form")?.remove()
 
