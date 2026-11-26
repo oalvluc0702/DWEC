@@ -32,16 +32,15 @@ export class TareaConDispositivos extends Tarea{
         }
         this.#dispositivos.set(nombre, fallos);
     }
-    comprobarPaso(desde,hasta){
+    comprobarPaso(hasta){
         if (hasta !== "Hecho") return;            
         const lista_fallidos = []
         for (const dispositivo of this.#dispositivos){
             const fallos = this.#dispositivos.get(dispositivo)
             if (fallos > 0){
-                lista_fallidos
+                lista_fallidos.push(dispositivo);
             }
-        }
-        const fallidos = 
-        if (fallidos.length > 0) throw new PruebasFallidasError(fallidos);
+        } 
+        if (lista_fallidos.length > 0) throw new PruebasFallidasError(lista_fallidos);
     }
 }
