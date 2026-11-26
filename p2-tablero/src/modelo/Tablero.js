@@ -5,6 +5,8 @@ import { Columna } from "./Columna.js";
 import { ColumnaLlenaError, ErrorTablero, MovimientoNoPermitidoError } from "./errores.js";
 import { Tarea } from "./Tarea.js";
 import { TareaRecurrente } from "./TareaRecurrente.js";
+import { TareaConDispositivos } from "./TareaConDispositivos.js";
+
 import { aDatos, desdeDatos } from "./serializar.js";
 
 export class Tablero {
@@ -49,10 +51,15 @@ export class Tablero {
   //   y la devuelve. datos es un objeto { titulo, prioridad, limite, cadaDias }: saca cada campo
   //   y pásaselo al constructor, en su orden (new Tarea(datos) NO vale: espera el título)
   crearTarea(datos) {
+    if (datos.dispositivos !== undefined){
+      const dispositivos = datos.dispositivos
+      return new TareaConDispositivos(titulo,prioridad,limite,dispositivos);
+    }
     const { titulo, prioridad, limite, cadaDias } = datos;
     if ("cadaDias" in datos) {
       return new TareaRecurrente(titulo, prioridad, limite, cadaDias);
-    } else {
+    }
+    else {
       return new Tarea(titulo, prioridad, limite);
     }
   }
@@ -106,6 +113,8 @@ export class Tablero {
     // 4. Acción
     const tarea = this.buscar(id);
     const columnaOrigen = this.dondeEsta(id);
+
+    tarea.comprobarPaso(columnaOrigen.nombre,destino)
 
     columnaOrigen.quitar(id);
     columnaDestino.añadir(tarea);

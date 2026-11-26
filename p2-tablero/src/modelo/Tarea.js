@@ -34,6 +34,7 @@ export class Tarea {
     this.limite = limite === null ? null : parsearFecha(limite);
     this.creada = new Date();
   }
+  
 
   get titulo() {
     return this.#titulo;
@@ -65,7 +66,7 @@ export class Tarea {
     this.#prioridad = Tarea.PRIORIDADES[this.peso - 1];
     return true;
   }
-
+  comprobarPaso(desde, hasta) {}
   /** ¿Se ha pasado la fecha límite? `hoy` se puede pasar para probar (por defecto, hoy) */
   estaVencida(hoy = new Date()) {
     return this.limite !== null && this.limite < soloDia(hoy);
