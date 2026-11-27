@@ -1,0 +1,282 @@
+/* estilos.css — el aspecto de la página del repaso (color de DWEC). No hace falta tocarlo. */
+:root {
+  --dwec: #ea4335;
+  --fondo: #f7f7f8;
+  --texto: #1f2328;
+  --suave: #59636e;
+  --borde: #d0d7de;
+  --bien: #1a7f37;
+  --mal: #cf222e;
+  --pendiente: #9a6700;
+  --codigo: #24292f;
+  font-family: system-ui, sans-serif;
+  color: var(--texto);
+  background: var(--fondo);
+}
+body {
+  margin: 0;
+}
+header {
+  background: var(--dwec);
+  color: white;
+  padding: 1rem 1.5rem 0.5rem;
+}
+header h1 {
+  margin: 0 0 0.6rem;
+  font-size: 1.4rem;
+}
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+nav a {
+  color: white;
+  text-decoration: none;
+  padding: 0.35rem 0.7rem;
+  border-radius: 6px 6px 0 0;
+  background: rgb(255 255 255 / 0.15);
+  font-size: 0.9rem;
+}
+nav a.activo {
+  background: var(--fondo);
+  color: var(--dwec);
+  font-weight: 600;
+}
+main {
+  max-width: 1050px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem 3rem;
+}
+.panel {
+  background: white;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  padding: 0.5rem 1.2rem 1rem;
+  margin-bottom: 1rem;
+}
+h2 {
+  font-size: 1.1rem;
+}
+.titulo-bloque {
+  font-size: 1.3rem;
+  color: var(--dwec);
+}
+p {
+  color: var(--suave);
+}
+code,
+pre,
+textarea {
+  font-family: ui-monospace, "Cascadia Code", Menlo, monospace;
+  font-size: 0.88rem;
+}
+.ejemplos {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.ejemplo {
+  display: grid;
+  grid-template-columns: 1.8rem 1fr;
+  gap: 0.2rem 0.5rem;
+  padding: 0.6rem 0.6rem;
+  border-left: 4px solid var(--borde);
+  margin-bottom: 0.5rem;
+  background: #fafbfc;
+}
+.ejemplo .codigo {
+  margin: 0;
+  white-space: pre-wrap;
+  color: var(--codigo);
+}
+.ejemplo .resultado {
+  grid-column: 2;
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 0.88rem;
+  white-space: pre-wrap;
+}
+.bien {
+  border-left-color: var(--bien);
+}
+.bien .resultado,
+.salida.bien {
+  color: var(--bien);
+}
+.mal {
+  border-left-color: var(--mal);
+}
+.mal .resultado,
+.salida.mal,
+.panel.mal pre {
+  color: var(--mal);
+}
+.pendiente {
+  border-left-color: var(--pendiente);
+}
+.pendiente .resultado {
+  color: var(--pendiente);
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+th,
+td {
+  text-align: left;
+  padding: 0.35rem 0.5rem;
+  border-bottom: 1px solid var(--borde);
+  vertical-align: top;
+}
+td.real {
+  font-family: ui-monospace, Menlo, monospace;
+  font-weight: 600;
+}
+textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.5rem;
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+}
+button {
+  margin-top: 0.4rem;
+  padding: 0.35rem 0.9rem;
+  border: 0;
+  border-radius: 6px;
+  background: var(--dwec);
+  color: white;
+  cursor: pointer;
+}
+td button {
+  margin: 0;
+}
+.salida {
+  white-space: pre-wrap;
+  min-height: 1.2rem;
+}
+.depurar li {
+  margin-bottom: 0.4rem;
+}
+.nota {
+  font-size: 0.85rem;
+}
+
+/* UD5: el escenario (la página de prueba del bloque) y el registro de lo que pasa */
+.escenario {
+  border: 2px dashed var(--dwec);
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+  background: white;
+}
+.escenario .libro {
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+  padding: 0.3rem 0.7rem;
+  margin: 0.3rem 0;
+  list-style: none;
+}
+.escenario .libro h3 {
+  display: inline;
+  font-size: 1rem;
+  margin-right: 0.6rem;
+}
+.escenario .libro p {
+  display: inline;
+  margin-right: 0.6rem;
+}
+.escenario .prestado {
+  background: #fff4e5;
+}
+.escenario .prestado h3::after {
+  content: " · prestado";
+  color: var(--pendiente);
+  font-weight: normal;
+}
+.escenario .destacado {
+  outline: 3px solid #fbbc04;
+}
+.escenario [aria-invalid="true"] {
+  border-color: var(--mal);
+  background: #ffebe9;
+}
+.escenario [data-error-de] {
+  color: var(--mal);
+  font-size: 0.85rem;
+  margin: 0 0.6rem 0 0.3rem;
+}
+.escenario input {
+  padding: 0.25rem 0.4rem;
+  margin: 0.2rem 0;
+}
+.escenario .etiqueta {
+  background: #eef;
+  padding: 0 0.3rem;
+  border-radius: 4px;
+}
+.registro {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 14rem;
+  overflow: auto;
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 0.85rem;
+}
+.registro li {
+  padding: 0.15rem 0;
+  border-bottom: 1px dotted var(--borde);
+}
+.conexiones {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0.6rem;
+}
+.conexiones li {
+  padding: 0.2rem 0.5rem;
+  border-left: 4px solid var(--borde);
+  margin-bottom: 0.25rem;
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 0.85rem;
+}
+.conexiones li.bien {
+  border-left-color: var(--bien);
+  color: var(--bien);
+}
+.conexiones li.pendiente {
+  border-left-color: var(--pendiente);
+  color: var(--pendiente);
+}
+.conexiones li.mal {
+  border-left-color: var(--mal);
+  color: var(--mal);
+}
+
+/* El taller: tarjetas, aviso y formulario de pieza */
+.escenario #reparaciones {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.6rem;
+}
+.escenario .reparacion {
+  border: 1px solid var(--borde);
+  border-left: 5px solid #9aa0a6;
+  border-radius: 8px;
+  padding: 0.4rem 0.7rem 0.7rem;
+  background: white;
+}
+.escenario .reparacion.estado-pendiente { border-left-color: #fbbc04; }
+.escenario .reparacion.estado-en-taller { border-left-color: #4285f4; }
+.escenario .reparacion.estado-lista { border-left-color: var(--bien); opacity: 0.8; }
+.escenario .reparacion.urgente h3::after { content: " ⚡"; }
+.escenario .reparacion.elegida { outline: 3px solid var(--dwec); }
+.escenario .reparacion h3 { margin: 0.2rem 0; font-size: 1rem; overflow-wrap: anywhere; }
+.escenario .reparacion p { margin: 0.1rem 0; font-size: 0.85rem; color: var(--suave); }
+.escenario .reparacion button { margin: 0.3rem 0.3rem 0 0; }
+.escenario .reparacion form { margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px dashed var(--borde); display: grid; gap: 0.2rem; }
+.escenario .error { color: var(--mal); font-size: 0.8rem; margin: 0; min-height: 0.5rem; }
+.escenario [aria-invalid="true"] { border: 2px solid var(--mal); }
+.escenario .aviso { background: #fce8e6; color: var(--mal); border: 1px solid var(--mal); border-radius: 6px; padding: 0.4rem 0.7rem; }
+.escenario .vacio { color: var(--suave); font-style: italic; }

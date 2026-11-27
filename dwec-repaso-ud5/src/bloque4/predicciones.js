@@ -1,0 +1,9 @@
+// 🔮 PREDICCIONES · Cambia cada undefined por lo que crees que da (un texto entre comillas, true/false…).
+// Cada línea se puede ejecutar tal cual en la consola del navegador (F12) o con «Probar» en la página del kit.
+export const predicciones = {
+  p1: undefined, // const orden = []; const ul = document.createElement("ul"); ul.innerHTML = "<li><button>x</button></li>"; const li = ul.firstElementChild; const b = li.firstElementChild; ul.addEventListener("click", () => orden.push("ul")); b.addEventListener("click", () => orden.push("button")); li.addEventListener("click", () => orden.push("li")); b.click(); orden.join(",")
+  p2: undefined, // const orden = []; const ul = document.createElement("ul"); ul.innerHTML = "<li><button>x</button></li>"; const li = ul.firstElementChild; const b = li.firstElementChild; ul.addEventListener("click", () => orden.push("ul"), { capture: true }); b.addEventListener("click", () => orden.push("button")); li.addEventListener("click", () => orden.push("li")); b.click(); orden.join(",")
+  p3: undefined, // let llega = false; const ul = document.createElement("ul"); ul.innerHTML = "<li><button>x</button></li>"; ul.querySelector("li").addEventListener("click", (e) => e.preventDefault()); ul.addEventListener("click", () => (llega = true)); ul.querySelector("button").click(); llega
+  p4: undefined, // const a = document.createElement("a"); a.href = "#x"; const ev = new MouseEvent("click", { bubbles: true, cancelable: true }); a.addEventListener("click", (e) => e.stopPropagation()); a.dispatchEvent(ev); ev.defaultPrevented
+  p5: undefined, // let r; const ul = document.createElement("ul"); ul.innerHTML = '<li data-id="7"><button data-accion="borrar"><span>x</span></button></li>'; ul.addEventListener("click", (e) => (r = e.target.dataset.accion ?? "nada")); ul.querySelector("span").click(); r
+};

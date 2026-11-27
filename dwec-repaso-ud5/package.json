@@ -1,0 +1,15 @@
+{
+  "name": "dwec-repaso-ud5",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "DWEC · Repaso para el Parcial 2: DOM y eventos (UD5, opcional). Todo se lanza con docker compose.",
+  "scripts": {
+    "dev": "vite",
+    "comprobar": "node comprobador/comprobar.mjs"
+  },
+  "devDependencies": {
+    "@happy-dom/global-registrator": "20.14.6",
+    "vite": "8.3.4"
+  }
+}
